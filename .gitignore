@@ -1,4 +1,5 @@
 target/
+webhook.json
 ### IntelliJ IDEA ###
 .idea
 *.iws
