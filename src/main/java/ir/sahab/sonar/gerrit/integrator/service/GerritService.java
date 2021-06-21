@@ -75,13 +75,13 @@ public class GerritService {
             throw new ResponseStatusException(HttpStatus.OK,
                     "Not a gerrit review. '" + gerritPropKey + "' does not exists!");
         }
-        String[] IdParts = gerritId.split("-");
-        if (IdParts.length != 2) {
+        String[] idParts = gerritId.split("-");
+        if (idParts.length != 2) {
             throw new InvalidRequestException("'" + gerritId + "' is not a valid gerrit ID!");
         }
 
         try {
-            return new GerritPatchSet(Integer.parseInt(IdParts[0]), Integer.parseInt(IdParts[1]));
+            return new GerritPatchSet(Integer.parseInt(idParts[0]), Integer.parseInt(idParts[1]));
         } catch (NumberFormatException e) {
             throw new InvalidRequestException("'" + gerritId + "' contains not integer parts!");
         }
@@ -128,7 +128,7 @@ public class GerritService {
 
         String url = String.format("%s/a/changes/%d/revisions/%d/review", gerritAddress, patchSet.changeId,
                 patchSet.patchSetNumber);
-        ResponseEntity<String> response = restTemplate.postForEntity(url, review, String.class);
+        ResponseEntity<Void> response = restTemplate.postForEntity(url, review, Void.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new ResponseStatusException(HttpStatus.FAILED_DEPENDENCY,
                     "Gerrit responded: " + response.getStatusCode());

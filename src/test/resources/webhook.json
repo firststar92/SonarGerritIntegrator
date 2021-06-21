@@ -14,7 +14,7 @@
     "name": "pKey",
     "type": "PULL_REQUEST",
     "isMain": false,
-    "url": "http://localhost/dashboard?id=ir.sahab%3Aproject&pullRequest=m.dehghan"
+    "url": "http://localhost/dashboard?id=ir.sahab%3Aproject&pullRequest=pKey"
   },
   "qualityGate": {
     "name": "Sonar way",

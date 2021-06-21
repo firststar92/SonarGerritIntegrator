@@ -39,8 +39,8 @@ public class SonarQubeService {
 
     public SonarSearchResult getIssuesOf(SonarWebHook webHook) {
         String type = webHook.branch.type == BranchType.BRANCH ? "branch" : "pullRequest";
-        final String url = String.format("%s/api/issues/search?%s=%s&componentKeys=%s", sonarAddress, type,
-                webHook.branch.name, webHook.project.key);
+        final String url = String.format("%s/api/issues/search?%s=%s&componentKeys=%s&resolved=false", sonarAddress,
+                type, webHook.branch.name, webHook.project.key);
         ResponseEntity<SonarSearchResult> response = restTemplate.getForEntity(url, SonarSearchResult.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new ResponseStatusException(HttpStatus.FAILED_DEPENDENCY,
@@ -57,11 +57,10 @@ public class SonarQubeService {
         Map<String, List<RobotCommentInput>> comments = new HashMap<>();
         for (Issue issue : searchResult.issues) {
             RobotCommentInput comment = new RobotCommentInput();
-            String urlEncodedRuleId = URLEncoder.encode(issue.rule, StandardCharsets.UTF_8.toString());
             String url = String.format("%s/coding_rules?open=%s&rule_key=%s", sonarAddress,
-                    urlEncodedRuleId, urlEncodedRuleId);
+                    issue.rule, issue.rule);
             comment.message = issue.message + "\n\nRead more: " + url;
-            comment.robotId = "SonarQube";
+            comment.robotId = "SonarQubeBot";
             comment.robotRunId = webHook.taskId;
 
             String type = webHook.branch.type == BranchType.BRANCH ? "branch" : "pullRequest";

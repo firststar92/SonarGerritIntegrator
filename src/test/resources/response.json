@@ -11,7 +11,7 @@
   "issues": [
     {
       "key": "AXoona70N4J-FqoGCFC_",
-      "rule": "checkstyle:com.puppysahabwl.tools.checkstyle.checks.imports.AvoidStarImportCheck",
+      "rule": "checkstyle:com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck",
       "severity": "MINOR",
       "component": "ir.sahab.project:project:testS/src/main/java/ir/sahab/testS.java",
       "project": "ir.sahab.project:project",

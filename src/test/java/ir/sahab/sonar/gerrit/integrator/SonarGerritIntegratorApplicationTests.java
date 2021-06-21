@@ -2,8 +2,6 @@ package ir.sahab.sonar.gerrit.integrator;
 
 import ir.sahab.sonar.gerrit.integrator.service.GerritService;
 import ir.sahab.sonar.gerrit.integrator.service.SonarQubeService;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +48,7 @@ class SonarGerritIntegratorApplicationTests {
 
 		String authHeader = "Basic " + Base64.getEncoder().encodeToString(
 				("sonarToken" + ':').getBytes());
-		sonarServer.expect(requestTo("http://localhost/api/issues/search?pullRequest=pKey&componentKeys=ir.sahab:project"))
+		sonarServer.expect(requestTo("http://localhost/api/issues/search?pullRequest=pKey&componentKeys=ir.sahab:project&resolved=false"))
 				.andExpect(method(HttpMethod.GET))
 				.andExpect(header("Authorization", authHeader))
 				.andRespond(withSuccess(Files.readAllBytes(path), MediaType.APPLICATION_JSON));
@@ -60,28 +58,6 @@ class SonarGerritIntegratorApplicationTests {
 		gerritServer.expect(requestTo("http://localhost/a/changes/1147/revisions/7/review"))
 				.andExpect(method(HttpMethod.POST))
 				.andExpect(header("Authorization", authHeader))
-				.andExpect(content().string(new Matcher<String>() {
-					@Override
-					public boolean matches(Object o) {
-						System.out.println(o);
-						return true;
-					}
-
-					@Override
-					public void describeMismatch(Object o, Description description) {
-
-					}
-
-					@Override
-					public void _dont_implement_Matcher___instead_extend_BaseMatcher_() {
-
-					}
-
-					@Override
-					public void describeTo(Description description) {
-
-					}
-				}))
 				.andRespond(withSuccess());
 
 		path = Paths.get(this.getClass().getResource("/webhook.json").toURI());
