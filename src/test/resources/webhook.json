@@ -1,0 +1,69 @@
+{
+  "serverUrl": "http://localhost",
+  "taskId": "AXoEl4qthqQPRpkKKg3M",
+  "status": "SUCCESS",
+  "analysedAt": "2021-06-13T08:57:43+0000",
+  "revision": "6904b79254ab2ba357fd0ce1193e91e1582b004b",
+  "changedAt": "2021-06-13T08:57:43+0000",
+  "project": {
+    "key": "ir.sahab:project",
+    "name": "Project",
+    "url": "http://localhost/dashboard?id=ir.sahab%3Aproject"
+  },
+  "branch": {
+    "name": "pKey",
+    "type": "PULL_REQUEST",
+    "isMain": false,
+    "url": "http://localhost/dashboard?id=ir.sahab%3Aproject&pullRequest=m.dehghan"
+  },
+  "qualityGate": {
+    "name": "Sonar way",
+    "status": "OK",
+    "conditions": [
+      {
+        "metric": "new_reliability_rating",
+        "operator": "GREATER_THAN",
+        "value": "1",
+        "status": "OK",
+        "errorThreshold": "1"
+      },
+      {
+        "metric": "new_security_rating",
+        "operator": "GREATER_THAN",
+        "value": "1",
+        "status": "OK",
+        "errorThreshold": "1"
+      },
+      {
+        "metric": "new_maintainability_rating",
+        "operator": "GREATER_THAN",
+        "value": "1",
+        "status": "OK",
+        "errorThreshold": "1"
+      },
+      {
+        "metric": "new_coverage",
+        "operator": "LESS_THAN",
+        "status": "NO_VALUE",
+        "errorThreshold": "80"
+      },
+      {
+        "metric": "new_duplicated_lines_density",
+        "operator": "GREATER_THAN",
+        "status": "NO_VALUE",
+        "errorThreshold": "3"
+      },
+      {
+        "metric": "new_security_hotspots_reviewed",
+        "operator": "LESS_THAN",
+        "status": "NO_VALUE",
+        "errorThreshold": "100"
+      }
+    ]
+  },
+  "properties": {
+    "sonar.analysis.detectedscm": "git",
+    "sonar.analysis.detectedci": "undetected",
+    "sonar.analysis.gerritId": "1147-7"
+  }
+}

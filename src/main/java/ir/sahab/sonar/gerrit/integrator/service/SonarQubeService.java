@@ -1,5 +1,6 @@
 package ir.sahab.sonar.gerrit.integrator.service;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.api.changes.ReviewInput.RobotCommentInput;
 import com.google.gerrit.extensions.client.Comment;
 import ir.sahab.sonar.gerrit.integrator.dto.SonarSearchResult;
@@ -29,6 +30,11 @@ public class SonarQubeService {
                             @Value("${sonar.token}") String sonarToken) {
         this.restTemplate = restTemplateBuilder.basicAuthentication(sonarToken, "").build();
         this.sonarAddress = sonarAddress;
+    }
+
+    @VisibleForTesting
+    public RestTemplate getRestTemplate() {
+        return restTemplate;
     }
 
     public SonarSearchResult getIssuesOf(SonarWebHook webHook) {

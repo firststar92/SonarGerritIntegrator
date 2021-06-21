@@ -1,6 +1,10 @@
 package ir.sahab.sonar.gerrit.integrator.service;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import ir.sahab.sonar.gerrit.integrator.dto.GerritPatchSet;
 import ir.sahab.sonar.gerrit.integrator.dto.QualityGate;
@@ -35,8 +39,16 @@ public class GerritService {
                          @Value("${gerrit.token}") String gerritToken) {
         this.restTemplate = restTemplateBuilder.basicAuthentication(gerritUser, gerritToken).messageConverters(
                 new MappingJackson2HttpMessageConverter(Jackson2ObjectMapperBuilder.json()
-                        .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE).build())).build();
+                        .serializationInclusion(JsonInclude.Include.NON_NULL)
+                        .visibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE)
+                        .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+                        .build())).build();
         this.gerritAddress = gerritAddress;
+    }
+
+    @VisibleForTesting
+    public RestTemplate getRestTemplate() {
+        return restTemplate;
     }
 
     private static String getConditionEmoji(QualityGate.Condition condition) {

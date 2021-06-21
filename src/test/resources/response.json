@@ -1,0 +1,82 @@
+{
+  "total": 25,
+  "p": 1,
+  "ps": 100,
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 100,
+    "total": 25
+  },
+  "effortTotal": 158,
+  "issues": [
+    {
+      "key": "AXoona70N4J-FqoGCFC_",
+      "rule": "checkstyle:com.puppysahabwl.tools.checkstyle.checks.imports.AvoidStarImportCheck",
+      "severity": "MINOR",
+      "component": "ir.sahab.project:project:testS/src/main/java/ir/sahab/testS.java",
+      "project": "ir.sahab.project:project",
+      "line": 34,
+      "hash": "02d6caf33728ajs5di85516208efbc15",
+      "textRange": {
+        "startLine": 34,
+        "endLine": 34,
+        "startOffset": 0,
+        "endOffset": 46
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Using the \u0027.*\u0027 form of import should be avoided - ir.sahab.*.",
+      "effort": "15min",
+      "debt": "15min",
+      "author": "",
+      "tags": [],
+      "creationDate": "2021-06-20T08:50:48+0000",
+      "updateDate": "2021-06-20T08:50:48+0000",
+      "type": "CODE_SMELL",
+      "branch": "test",
+      "scope": "MAIN"
+    },
+    {
+      "key": "AXoonBiBN4J-FqoGCEeL",
+      "rule": "common-java:DuplicatedBlocks",
+      "severity": "MAJOR",
+      "component": "ir.sahab.project:project:testL/src/main/java/ir/sahab/testL.java",
+      "project": "ir.sahab.project:project",
+      "flows": [],
+      "status": "OPEN",
+      "message": "1 duplicated blocks of code must be removed.",
+      "effort": "20min",
+      "debt": "20min",
+      "author": "",
+      "tags": [
+        "pitfall"
+      ],
+      "creationDate": "2021-02-23T14:44:40+0000",
+      "updateDate": "2021-06-11T11:15:34+0000",
+      "type": "CODE_SMELL",
+      "branch": "test",
+      "scope": "MAIN"
+    }
+  ],
+  "components": [
+    {
+      "key": "ir.sahab.project:project:testL/src/main/java/ir/sahab/testL.java",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "testL.java",
+      "longName": "testL/src/main/java/ir/sahab/testL.java",
+      "path": "testL/src/main/java/ir/sahab/testL.java",
+      "branch": "test"
+    },
+    {
+      "key": "ir.sahab.project:project:testS/src/main/java/ir/sahab/testS.java",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "testS.java",
+      "longName": "testS/src/main/java/ir/sahab/testS.java",
+      "path": "testS/src/main/java/ir/sahab/testS.java",
+      "branch": "test"
+    }
+  ],
+  "facets": []
+}
