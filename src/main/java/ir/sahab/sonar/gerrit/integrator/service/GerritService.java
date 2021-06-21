@@ -1,24 +1,67 @@
 package ir.sahab.sonar.gerrit.integrator.service;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.google.gerrit.extensions.api.changes.ReviewInput;
 import ir.sahab.sonar.gerrit.integrator.dto.GerritPatchSet;
 import ir.sahab.sonar.gerrit.integrator.dto.QualityGate;
-import ir.sahab.sonar.gerrit.integrator.dto.QualityGate.Condition.ConditionStatus;
 import ir.sahab.sonar.gerrit.integrator.dto.QualityGate.QualityGateStatus;
 import ir.sahab.sonar.gerrit.integrator.dto.SonarWebHook;
 import ir.sahab.sonar.gerrit.integrator.dto.SonarWebHook.AnalysisStatus;
 import ir.sahab.sonar.gerrit.integrator.exception.InvalidRequestException;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @Service
 public class GerritService {
-    public GerritPatchSet getPatchSet(SonarWebHook webHook) {
+
+    private final RestTemplate restTemplate;
+    private final String gerritAddress;
+
+    public GerritService(RestTemplateBuilder restTemplateBuilder,
+                         @Value("${gerrit.address}") String gerritAddress,
+                         @Value("${gerrit.user}") String gerritUser,
+                         @Value("${gerrit.token}") String gerritToken) {
+        this.restTemplate = restTemplateBuilder.basicAuthentication(gerritUser, gerritToken).messageConverters(
+                new MappingJackson2HttpMessageConverter(Jackson2ObjectMapperBuilder.json()
+                        .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE).build())).build();
+        this.gerritAddress = gerritAddress;
+    }
+
+    private static String getConditionEmoji(QualityGate.Condition condition) {
+        switch (condition.status) {
+            case OK:
+                return "☑️";
+            case ERROR:
+                return "⭕";
+            default:
+                return "⏹️";
+        }
+    }
+
+    private static String humanizeSnakeCase(String name) {
+        return StringUtils.capitalize(StringUtils.join(
+                StringUtils.split(StringUtils.removeStart(name.toLowerCase(Locale.ENGLISH), "new_"), '_'),
+                StringUtils.SPACE));
+    }
+
+    public static GerritPatchSet getPatchSet(SonarWebHook webHook) {
         final String gerritPropKey = "sonar.analysis.gerritId";
         String gerritId = webHook.properties.get(gerritPropKey);
         if (gerritId == null) {
-            throw new InvalidRequestException("WebHook properties does not have '" + gerritPropKey + "'!");
+            throw new ResponseStatusException(HttpStatus.OK,
+                    "Not a gerrit review. '" + gerritPropKey + "' does not exists!");
         }
         String[] IdParts = gerritId.split("-");
         if (IdParts.length != 2) {
@@ -33,7 +76,7 @@ public class GerritService {
 
     }
 
-    public String generateGerritMessage(SonarWebHook webHook) {
+    private static String generateGerritMessage(SonarWebHook webHook) {
         if (webHook.status == AnalysisStatus.FAILED) {
             return "🛑 Analysis failed!";
         }
@@ -46,12 +89,12 @@ public class GerritService {
         }
 
         for (QualityGate.Condition condition : webHook.qualityGate.conditions) {
-            String metricName = humanizeKebabCase(condition.metric);
+            String metricName = humanizeSnakeCase(condition.metric);
             message.append(getConditionEmoji(condition))
                     .append(' ')
                     .append(metricName)
                     .append("(not ")
-                    .append(humanizeKebabCase(condition.operator.name()).toLowerCase(Locale.ENGLISH))
+                    .append(humanizeSnakeCase(condition.operator.name()).toLowerCase(Locale.ENGLISH))
                     .append(' ')
                     .append(condition.errorThreshold)
                     .append(condition.value != null ? ", value: " + condition.value : ", not-computed")
@@ -63,20 +106,21 @@ public class GerritService {
         return message.toString();
     }
 
-    private static String getConditionEmoji(QualityGate.Condition condition) {
-        switch (condition.status) {
-            case OK:
-                return "☑️";
-            case ERROR:
-                return "⭕";
-            default:
-                return "⏹️";
-        }
-    }
+    public void sendGerritReview(Map<String, List<ReviewInput.RobotCommentInput>> comments, GerritPatchSet patchSet,
+                                 SonarWebHook webHook) {
+        ReviewInput review = webHook.qualityGate.status == QualityGateStatus.OK ?
+                ReviewInput.recommend() : ReviewInput.dislike();
+        review.message = generateGerritMessage(webHook);
+        review.tag = "autogenerated:sonarqube";
+        review.robotComments = comments;
 
-    private static String humanizeKebabCase(String name) {
-        return StringUtils.capitalize(StringUtils.join(
-                        StringUtils.split(StringUtils.removeStart(name.toLowerCase(Locale.ENGLISH), "new_"), '_'),
-                        StringUtils.SPACE));
+        String url = String.format("%s/a/changes/%d/revisions/%d/review", gerritAddress, patchSet.changeId,
+                patchSet.patchSetNumber);
+        ResponseEntity<String> response = restTemplate.postForEntity(url, review, String.class);
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new ResponseStatusException(HttpStatus.FAILED_DEPENDENCY,
+                    "Gerrit responded: " + response.getStatusCode());
+        }
+
     }
 }

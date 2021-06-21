@@ -15,9 +15,11 @@ public class SonarSearchResult {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Issue {
-        public String key;
         public Integer line;
         public TextRange textRange;
+
+        @NotNull
+        public String key;
 
         @NotNull
         public String rule;
