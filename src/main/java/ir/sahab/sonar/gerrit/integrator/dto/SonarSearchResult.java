@@ -1,9 +1,8 @@
 package ir.sahab.sonar.gerrit.integrator.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.validation.constraints.NotNull;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SonarSearchResult {

@@ -1,7 +1,7 @@
 package ir.sahab.sonar.gerrit.integrator.dto;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 
 public class QualityGate {
     @NotNull

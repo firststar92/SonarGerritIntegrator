@@ -1,0 +1,10 @@
+server:
+    port: 8081
+    error.include-message: always
+sonar:
+    address:
+    token:
+gerrit:
+    address:
+    token:
+    user:

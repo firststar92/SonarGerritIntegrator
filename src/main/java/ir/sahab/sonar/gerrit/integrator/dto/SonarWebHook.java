@@ -1,8 +1,8 @@
 package ir.sahab.sonar.gerrit.integrator.dto;
 
-import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Map;
+import javax.validation.constraints.NotNull;
 
 public class SonarWebHook {
     public String serverUrl;
