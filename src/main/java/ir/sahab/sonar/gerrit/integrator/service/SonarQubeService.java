@@ -7,6 +7,12 @@ import ir.sahab.sonar.gerrit.integrator.dto.SonarSearchResult;
 import ir.sahab.sonar.gerrit.integrator.dto.SonarSearchResult.Issue;
 import ir.sahab.sonar.gerrit.integrator.dto.SonarWebHook;
 import ir.sahab.sonar.gerrit.integrator.dto.SonarWebHook.Branch.BranchType;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
@@ -14,11 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
 
 @Service
 public class SonarQubeService {
@@ -50,7 +51,7 @@ public class SonarQubeService {
     }
 
     public Map<String, List<RobotCommentInput>> createGerritComments(SonarSearchResult searchResult,
-            SonarWebHook webHook) throws UnsupportedEncodingException {
+            SonarWebHook webHook) {
         if (searchResult.total == 0) {
             return Collections.emptyMap();
         }

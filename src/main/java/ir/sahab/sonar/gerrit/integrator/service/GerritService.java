@@ -12,6 +12,9 @@ import ir.sahab.sonar.gerrit.integrator.dto.QualityGate.QualityGateStatus;
 import ir.sahab.sonar.gerrit.integrator.dto.SonarWebHook;
 import ir.sahab.sonar.gerrit.integrator.dto.SonarWebHook.AnalysisStatus;
 import ir.sahab.sonar.gerrit.integrator.exception.InvalidRequestException;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -23,12 +26,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 @Service
 public class GerritService {
+
+    private static final String invalidGerritIdErrorMessage = "Gerrit ID is not a valid. "
+            + "It should be in form of <gerrit-cl-number>-<gerrit-patch-set-number>: '%s'";
 
     private final RestTemplate restTemplate;
     private final String gerritAddress;
@@ -75,17 +77,16 @@ public class GerritService {
             throw new ResponseStatusException(HttpStatus.OK,
                     "Not a gerrit review. '" + gerritPropKey + "' does not exists!");
         }
-        String[] idParts = gerritId.split("-");
+        String[] idParts = gerritId.split("-", -1);
         if (idParts.length != 2) {
-            throw new InvalidRequestException("'" + gerritId + "' is not a valid gerrit ID!");
+            throw new InvalidRequestException(String.format(invalidGerritIdErrorMessage, gerritId));
         }
 
         try {
             return new GerritPatchSet(Integer.parseInt(idParts[0]), Integer.parseInt(idParts[1]));
         } catch (NumberFormatException e) {
-            throw new InvalidRequestException("'" + gerritId + "' contains not integer parts!");
+            throw new InvalidRequestException(String.format(invalidGerritIdErrorMessage, gerritId));
         }
-
     }
 
     private static String generateGerritMessage(SonarWebHook webHook) {

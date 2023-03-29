@@ -13,8 +13,8 @@
       "key": "AXoona70N4J-FqoGCFC_",
       "rule": "checkstyle:com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck",
       "severity": "MINOR",
-      "component": "ir.sahab.project:project:testS/src/main/java/ir/sahab/testS.java",
-      "project": "ir.sahab.project:project",
+      "component": "project:project:testS/src/main/java/testS.java",
+      "project": "project:project",
       "line": 34,
       "hash": "02d6caf33728ajs5di85516208efbc15",
       "textRange": {
@@ -25,7 +25,7 @@
       },
       "flows": [],
       "status": "OPEN",
-      "message": "Using the \u0027.*\u0027 form of import should be avoided - ir.sahab.*.",
+      "message": "Using the \u0027.*\u0027 form of import should be avoided - ir.*.",
       "effort": "15min",
       "debt": "15min",
       "author": "",
@@ -40,8 +40,8 @@
       "key": "AXoonBiBN4J-FqoGCEeL",
       "rule": "common-java:DuplicatedBlocks",
       "severity": "MAJOR",
-      "component": "ir.sahab.project:project:testL/src/main/java/ir/sahab/testL.java",
-      "project": "ir.sahab.project:project",
+      "component": "project:project:testL/src/main/java/testL.java",
+      "project": "project:project",
       "flows": [],
       "status": "OPEN",
       "message": "1 duplicated blocks of code must be removed.",
@@ -60,21 +60,21 @@
   ],
   "components": [
     {
-      "key": "ir.sahab.project:project:testL/src/main/java/ir/sahab/testL.java",
+      "key": "project:project:testL/src/main/java/testL.java",
       "enabled": true,
       "qualifier": "FIL",
       "name": "testL.java",
-      "longName": "testL/src/main/java/ir/sahab/testL.java",
-      "path": "testL/src/main/java/ir/sahab/testL.java",
+      "longName": "testL/src/main/java/testL.java",
+      "path": "testL/src/main/java/testL.java",
       "branch": "test"
     },
     {
-      "key": "ir.sahab.project:project:testS/src/main/java/ir/sahab/testS.java",
+      "key": "project:project:testS/src/main/java/testS.java",
       "enabled": true,
       "qualifier": "FIL",
       "name": "testS.java",
-      "longName": "testS/src/main/java/ir/sahab/testS.java",
-      "path": "testS/src/main/java/ir/sahab/testS.java",
+      "longName": "testS/src/main/java/testS.java",
+      "path": "testS/src/main/java/testS.java",
       "branch": "test"
     }
   ],

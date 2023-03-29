@@ -1,0 +1,8 @@
+server.error.include-message: always
+sonar:
+  address: http://localhost
+  token: sonarToken
+gerrit:
+  address: http://localhost
+  token: gerritToken
+  user: ci

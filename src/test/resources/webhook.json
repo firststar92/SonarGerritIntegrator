@@ -6,15 +6,15 @@
   "revision": "6904b79254ab2ba357fd0ce1193e91e1582b004b",
   "changedAt": "2021-06-13T08:57:43+0000",
   "project": {
-    "key": "ir.sahab:project",
+    "key": "project",
     "name": "Project",
-    "url": "http://localhost/dashboard?id=ir.sahab%3Aproject"
+    "url": "http://localhost/dashboard?id=project"
   },
   "branch": {
     "name": "pKey",
     "type": "PULL_REQUEST",
     "isMain": false,
-    "url": "http://localhost/dashboard?id=ir.sahab%3Aproject&pullRequest=pKey"
+    "url": "http://localhost/dashboard?id=project&pullRequest=pKey"
   },
   "qualityGate": {
     "name": "Sonar way",

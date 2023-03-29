@@ -6,16 +6,15 @@ import ir.sahab.sonar.gerrit.integrator.dto.SonarSearchResult;
 import ir.sahab.sonar.gerrit.integrator.dto.SonarWebHook;
 import ir.sahab.sonar.gerrit.integrator.service.GerritService;
 import ir.sahab.sonar.gerrit.integrator.service.SonarQubeService;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Map;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class Controller {
